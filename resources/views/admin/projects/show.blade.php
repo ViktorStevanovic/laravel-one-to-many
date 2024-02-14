@@ -11,6 +11,7 @@
                     <div class="card-body">
                         <h2 class="card-title">{{ $project->title }}</h2>
                         <p class="card-text">{{ $project->description }}</p>
+                        <p class="card-text">{{ $project->type->title }}</p>
                         <p class="card-text"><span class="fw-bold">Used Languages:</span> {{ $project->used_languages }}</p>
                         <p class="card-text">
                             <span class="fw-bold">Repository Url:</span> 
