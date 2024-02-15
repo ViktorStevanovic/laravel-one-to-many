@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Termwind\Components\Dd;
 
 class ProjectController extends Controller
@@ -12,6 +14,13 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
+    private $rules = [
+        'title' => ['required', 'min:3', 'string', 'max:255'],
+        'type_id' => ['exists:types,id'],
+        'project_url' => ['url:https', 'required'],
+        'description' => ['min:15', 'required'],
+    ];
+
     public function index()
     {
         $projects = Project::all();
@@ -24,7 +33,8 @@ class ProjectController extends Controller
     public function create()
     {
         $project = new Project();
-        return view('admin.projects.create', compact('project'));
+        $types = Type::all();
+        return view('admin.projects.create', compact('project', 'types'));
     }
 
     /**
@@ -32,7 +42,8 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate($this->rules);
+        $data['user_id'] = Auth::id();
         $newProject = Project::create($data);
 
         return redirect()->route('admin.projects.show', $newProject);
@@ -51,7 +62,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        $types = Type::all();
+        return view('admin.projects.edit', compact('project', 'types'));
     }
 
     /**
@@ -59,7 +71,8 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        $data = $request->all();
+        $data = $request->validate($this->rules);
+        $data['user_id'] = Auth::id();
         $project->update($data);
         return redirect()->route('admin.projects.show', $project);
     }

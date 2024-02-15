@@ -11,13 +11,15 @@
                     <div class="card-body">
                         <h2 class="card-title">{{ $project->title }}</h2>
                         <p class="card-text">{{ $project->description }}</p>
-                        <p class="card-text">{{ $project->type->title }}</p>
-                        <p class="card-text"><span class="fw-bold">Used Languages:</span> {{ $project->used_languages }}</p>
+                        <p class="card-text"><span class="fw-bold fs-5">Project type:</span>
+                            {{ $project->type->title }}
+                        </p>
+                        <p class="card-text"><span class="fw-bold fs-5">Used Languages:</span> {{ $project->used_languages }}</p>
                         <p class="card-text">
-                            <span class="fw-bold">Repository Url:</span> 
+                            <span class="fw-bold fs-5">Repository Url:</span> 
                             <a href="{{ $project->project_url }}" target="_blank" class="link-underline link-underline-opacity-0">{{ $project->project_url }}</a>
                         </p>
-                        <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-success">Edit</a>
+                        <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning">Edit</a>
 
                         <!-- Modal -->
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="{{ '#modal' . $project->id}}">Delete</button>
